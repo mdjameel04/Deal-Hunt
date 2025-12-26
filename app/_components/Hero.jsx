@@ -1,5 +1,6 @@
 import { Bell, Rabbit, Shield } from 'lucide-react';
 import React from 'react'
+import AddProductFrom from './AddProductFrom';
 
 const Hero = () => {
 
@@ -38,7 +39,7 @@ const products = []
             prices drop. Save money effortlessly.  </p>
 
         {/* text area */}
-         
+         <AddProductFrom/>
          {/* featuers */}
          {products.length==0 && (
           <div className='grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16'>
