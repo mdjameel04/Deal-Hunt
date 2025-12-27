@@ -2,8 +2,14 @@ import { Button } from '@/components/ui/button'
 import { LogIn } from 'lucide-react'
 import Image from 'next/image'
 import React from 'react'
+import AuthButon from './AuthButon'
+import { createClient } from '@/utils/supabase/server'
 
-const Header = () => {
+const Header = async() => {
+  const supabase= await createClient()
+  const {
+    data : {user},
+  } = await supabase.auth.getUser() 
   return (
     <header className='bg-whtie/80 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-1'>
     <div className='max-w-7xl mx-auto px-4 py-4 flex justify-between items-center '>
@@ -13,9 +19,9 @@ const Header = () => {
    height={200} 
    className='h-10 w-auto '/>
   </div>
-  <Button className="bg-primary ">
-    <LogIn className='w-4 h-4'/>
-     sign In </Button>
+
+{/* Auth button */}
+  <AuthButon user={user}/>
     </div>
     </header>
   )
