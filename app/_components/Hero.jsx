@@ -1,10 +1,13 @@
-import { Bell, Rabbit, Shield } from 'lucide-react';
+import { Bell, Rabbit, Shield, TrendingDown } from 'lucide-react';
 import React from 'react'
 import AddProductFrom from './AddProductFrom';
+import { createClient } from '@/utils/supabase/server';
 
-const Hero = () => {
-
-const user = null;
+const Hero = async() => {
+  const supabase= await createClient()
+  const {
+    data : {user},
+  } = await supabase.auth.getUser() ;
 
 const products = []
 
@@ -56,6 +59,22 @@ const products = []
           </div>
          )}
   </div>
+   
+   {user && products.length==0 && (
+    <div className='bg-white rounded-xl border-2 border-dashed border-gray-300 p-12'>
+ <TrendingDown className='w-16 h-16 text-gray-400 mx-auto mb-4'/>
+ <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              No products yet
+            </h3>
+            <p className="text-gray-600">
+              Add your first product above to start tracking prices!
+            </p>
+
+    </div>
+   )}
+     
+
+
     </section>
   ) 
 }
