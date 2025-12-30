@@ -2,14 +2,15 @@ import { Bell, Rabbit, Shield, TrendingDown } from 'lucide-react';
 import React from 'react'
 import AddProductFrom from './AddProductFrom';
 import { createClient } from '@/utils/supabase/server';
-
+import { getProducts } from '../action';
+import ProductCard from './productCard';
 const Hero = async() => {
   const supabase= await createClient()
   const {
     data : {user},
   } = await supabase.auth.getUser() ;
 
-const products = []
+const products = user? await getProducts() : []
 
      const FEATURES = [
     {
@@ -42,7 +43,7 @@ const products = []
             prices drop. Save money effortlessly.  </p>
 
         {/* text area */}
-         <AddProductFrom/>
+         <AddProductFrom user={user}  />
          {/* featuers */}
          {products.length==0 && (
           <div className='grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-16'>
@@ -59,7 +60,25 @@ const products = []
           </div>
          )}
   </div>
-   
+  
+   { user && products.length >0 && (
+   <section className="max-w-7xl mx-auto px-4 pb-20">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold text-gray-900">
+              Your Tracked Products
+            </h3>
+            <span className="text-sm text-gray-500">
+              {products.length} {products.length === 1 ? "product" : "products"}
+            </span>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 items-start">
+            {products.map((product) => (
+              <ProductCard  key={product.id} product={product} />
+            ))} 
+           </div>
+        </section>)}
+
    {user && products.length==0 && (
     <div className='bg-white rounded-xl border-2 border-dashed border-gray-300 p-12'>
  <TrendingDown className='w-16 h-16 text-gray-400 mx-auto mb-4'/>
